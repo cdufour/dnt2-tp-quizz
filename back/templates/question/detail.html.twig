@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Suppresion de la question</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous certain de vouloir supprimer ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button id="delete" type="button" class="btn btn-danger">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col col-md-7 p-2">
+
+        <h4>{{question.label}}</h4>
+        <section class="mb-4">
+        {{question.category.name}},
+        {% if question.difficulty == 1 %} Facile
+        {% elseif question.difficulty == 2 %} Intermédiaire
+        {% else %} Difficile
+        {% endif %}
+        <a class="btn btn-sm btn-outline-dark ml-4"
+          href="{{path('question_edit', {'id':question.id})}}">Modifier</a>
+        <a id="deleteQuestion" class="btn btn-sm btn-outline-danger ml-4"
+          data-toggle="modal" data-target="#modal"
+          href="{{path('question_delete', {'id':question.id})}}">Supprimer</a>
+      </section>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Libellé</th>
+              <th>Bonne réponse</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for answer in question.answers %}
+            <tr>
+              <td>{{answer.label}}</td>
+              <td>
+                {{ answer.correct ? 'oui' : 'non' }}
+              </td>
+              <td>
+                <a class="btn btn-danger btn-sm"
+                  href="{{path('answer_delete', {'id':answer.id})}}">Supprimer</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col col-md-5 border bg-light p-2" style="height:200px">
+
+        <h4>Ajout d'une réponse</h4>
+        {{ form_start(form) }}
+
+          <div class="form-group m-2">
+            {# form_label(form.label) #}
+            {{ form_widget(form.label, {'attr': {'class':'form-control', 'placeholder':'Libellé'}}) }}
+          </div>
+          <div class="form-check m-2">
+            {{ form_label(form.correct) }}
+            {{ form_widget(form.correct, {'attr': {'class':'form-check-input ml-1'}}) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.submit) }}
+            {{ form_widget(form.submit, {'attr': {'class':'btn btn-primary btn-sm'}}) }}
+          </div>
+
+        {{form_end(form)}}
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  var server = 'http://localhost:8000';
+  var btnDeleteConfirm = document.querySelector('#delete');
+  var btnDeleteQuestion = document.querySelector('#deleteQuestion');
+
+  btnDeleteConfirm.addEventListener('click', function(e) {
+    var href = btnDeleteQuestion.getAttribute('href');
+    window.location.replace(server + href);
+  })
+
+</script>
+{% endblock %}

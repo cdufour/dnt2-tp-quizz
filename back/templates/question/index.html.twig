@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  {# filtres #}
+  <form class="form-inline m-4">
+    <div class="form-group mr-2">
+      <select class="form-control" name="category">
+        <option value="0">Choisir une catégorie</option>
+        {% for cat in categories %}
+          <option value="{{cat.id}}">{{cat.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group mr-2">
+      <select class="form-control" name="difficulty">
+        <option value="0">Choisir un niveau</option>
+        {% for key in difficulty|keys %}
+          <option value="{{difficulty[key]}}">{{key}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <button class="form-control btn btn-primary">Filtrer</button>
+    </div>
+  </form>
+
+  <div class="">
+    <a href="{{path('question_add')}}" class="btn btn-secondary btn-sm">
+      Ajouter une question</a>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Libellé de la question</th>
+        <th>Catégorie</th>
+        <th>Niveau de difficulté</th>
+        <th>Réponses</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    {% for question in questions %}
+    <tr>
+      <td>{{question.label}}</td>
+      <td>{{question.category.name}}</td>
+      <td>
+        {% if question.difficulty == 1 %}
+        Facile
+        {% elseif question.difficulty == 2 %}
+        Intermédiaire
+        {% else %}
+        Difficile
+        {% endif %}
+      </td>
+      <td>{{  question.answers | length  }}</td>
+    </td>
+      <td>
+        <a href="{{path('question_detail', {'id': question.id})}}">Détails</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

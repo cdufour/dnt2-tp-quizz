@@ -1,0 +1,14 @@
+** TP Quizz **
+* BACK (symfony) *
+3 entités
+- Question: label, level, Category
+- Answer: label, correct, Question
+- Category: label
+
+A une question correspond une catégorie
+Une catégorie est liée à plusieurs questions
+
+A une réponse correspond une question
+Une question est liée à plusieurs réponses
+
+* FRONT (angular) *

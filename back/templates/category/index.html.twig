@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="m-4 p-2">
+
+  <a
+    class="btn btn-primary btn-sm mb-4"
+    href="{{path('category_add')}}">Ajouter une catégorie</a>
+
+  <table class="table table-bordered table-striped">
+    {% for category in categories %}
+    <tr>
+      <td>{{ category.name }}</td>
+      <td>
+        <a class="btn btn-danger btn-sm"
+          href="{{path('category_delete', {'id':category.id})}}">Supprimer</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+
+
+{% endblock %}
